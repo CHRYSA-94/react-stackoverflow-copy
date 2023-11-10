@@ -181,6 +181,7 @@ body {
 
 .metrics-container {
   width: 80px;
+  min-width: 80px;
   margin-right: 20px;
 }
 
@@ -188,6 +189,14 @@ body {
   font-size: 13px;
   margin: 5px 0;
   color: hsl(210,8%,40%);
+}
+
+.main-header-container {
+  border-bottom: 1px solid hsl(210,8%,85%);
+}
+
+.MuiButton-outlined {
+  height: 35px;
 }
 /* Generic styles */
 
@@ -227,4 +236,8 @@ body {
 
 .padding {
   padding: 20px;
+}
+
+.max-width {
+  width: 100%;
 }

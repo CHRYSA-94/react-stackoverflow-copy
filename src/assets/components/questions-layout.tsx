@@ -1,39 +1,36 @@
 import Button from "@material-ui/core/Button";
 import { useEffect, useState } from "react";
-import { ButtonGroup, Dropdown } from "react-bootstrap";
+import { ButtonGroup, Dropdown, DropdownButton } from "react-bootstrap";
+import { useLoaderData } from "react-router-dom";
 // import DropdownButton from "@mui/material/DropdownButton";
 
 import useSWR from "swr";
 import { useQuestionsContext } from "../questions-context";
-import QuestionCard from "./QuestionCard";
+import { QuestionCard, QuestionProps } from "./question-card";
 import OverflowNews from "./stack-overflow-news";
 
-function Home() {
-  // // const [questions, setQuestions] = useState([]);
-  // const fetcher = (url: string) => fetch(url).then((res) => res.json());
-  // //   const questions = useQuestionsContext();
+export const questionsList = async () => {
+  const base = "https://api.stackexchange.com/";
+  const pathURL = "2.3/questions?order=desc&sort=activity&site=stackoverflow";
+  const { items } = await fetch(base + pathURL).then((res) => res.json());
+  return items;
+};
 
-  // // const fetchData = () => {
-  // const base = "https://api.stackexchange.com/";
-  // const pathURL = "2.3/questions?order=desc&sort=activity&site=stackoverflow";
-  // const { data: questions, error, isLoading } = useSWR<any>(
-  //   base + pathURL,
-  //   fetcher
-  // );
-  // if (error) return <div>failed to load</div>;
-  // if (isLoading) return <div>loading...</div>;
-  // console.log(questions);
-  // // };
+export default function Questions() {
+  const questions = useLoaderData() as QuestionProps[];
 
+  // Fetch data with useEffect
+
+  // const [questions, setQuestions] = useState<QuestionProps[]>([]);
   // useEffect(() => {
-  // const base = "https://api.stackexchange.com/";
-  // const pathURL = "2.3/questions?order=desc&sort=activity&site=stackoverflow";
-  // const fetchQuestions = async () => {
-  //   const res = await fetch(base + pathURL);
-  //   const data = await res.json();
-  //   setQuestions(data);
-  // };
-  // fetchQuestions();
+  //   const base = "https://api.stackexchange.com/";
+  //   const pathURL = "2.3/questions?order=desc&sort=activity&site=stackoverflow";
+  //   const fetchQuestions = async () => {
+  //     const res = await fetch(base + pathURL);
+  //     const data = await res.json();
+  //     setQuestions(data);
+  //   };
+  //   fetchQuestions();
   // }, []);
 
   return (
@@ -41,12 +38,13 @@ function Home() {
       <div className="main column">
         <div className="column main-header-container">
           <div className="row align-items-center space-between">
-            <h2 className="logo">Top Questions</h2>
+            <h2 className="logo">All Questions</h2>
             <Button variant="contained" color="primary" className="regular-btn">
               Ask Question
             </Button>
           </div>
-          <div className="row end">
+          <div className="row space-between">
+            <p>{questions?.length} questions</p>
             {/* <ButtonGroup>
               <Button>Newest</Button>
               <Button>Active</Button>
@@ -67,13 +65,13 @@ function Home() {
             </Button>
           </div>
         </div>
-        {/* {questions?.items?.map((question: any, index: number) => (
-          <QuestionCard key={index} question={question} />
-        ))} */}
+        {questions?.map((question: QuestionProps, index: number) => {
+          return <QuestionCard key={index} {...question} />;
+        })}
       </div>
-      <OverflowNews />
+      <div className="padding">
+        <OverflowNews />
+      </div>
     </div>
   );
 }
-
-export default Home;

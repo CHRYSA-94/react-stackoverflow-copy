@@ -1,7 +1,7 @@
 import { useState } from "react";
 import logo from "../../assets/stack_overflow.png";
 
-function Header() {
+export default function Header() {
   const headerMenu = ["About", "Products", "For Teams"];
   const listItems = headerMenu.map((item, index) => (
     <span key={index} className="menu-item">
@@ -10,8 +10,8 @@ function Header() {
   ));
   const [searchTerm, setSearchTerm] = useState("");
 
-  const handleSearch = (e) => {
-    setSearchTerm(e.target.value);
+  const handleSearch = () => {
+    return; // setSearchTerm(e.target.value);
   };
 
   return (
@@ -43,5 +43,3 @@ function Header() {
     </>
   );
 }
-
-export default Header;
